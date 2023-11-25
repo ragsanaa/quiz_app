@@ -1,31 +1,25 @@
-// ignore_for_file: use_build_context_synchronously
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quiz_app/providers/provider.dart';
 import 'package:quiz_app/utils/constants.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SplashScreen extends ConsumerWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final User? user = ref.watch(authStateProvider).value;
+    Future<void>.delayed(const Duration(seconds: 1), () {
 
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    nextPage();
-  }
+      if (user != null) {
+        GoRouter.of(context).go('/home');
+      } else {
+        GoRouter.of(context).go('/entry');
+      }
+    });
 
-  void nextPage() async {
-    await Future.delayed(const Duration(seconds: 1));
-
-    GoRouter.of(context).go('/entry');
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -37,10 +31,13 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
         ),
         child: Center(
-            child: Image.asset("assets/images/logo.png",
-                color: white,
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.5)),
+          child: Image.asset(
+            "assets/images/logo.png",
+            color: white,
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.5,
+          ),
+        ),
       ),
     );
   }

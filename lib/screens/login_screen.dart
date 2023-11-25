@@ -1,15 +1,21 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quiz_app/providers/provider.dart';
+import 'package:quiz_app/services/firebase_auth_service.dart';
 import 'package:quiz_app/utils/constants.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   LoginScreen({super.key});
   final emailCtrl = TextEditingController();
   final passwordCtrl = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final FirebaseAuthService auth = ref.read(firebaseAuthService);
     return Scaffold(
       body: Container(
+        color: Colors.transparent,
         padding: const EdgeInsets.fromLTRB(40, 5, 40, 40),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -64,7 +70,7 @@ class LoginScreen extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 if (emailCtrl.text.isEmpty || passwordCtrl.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -75,6 +81,8 @@ class LoginScreen extends StatelessWidget {
                     ),
                   );
                 } else {
+                  User? user = await auth.signInWithEmailAndPassword(
+                      emailCtrl.text, passwordCtrl.text);
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
@@ -120,7 +128,9 @@ class LoginScreen extends StatelessWidget {
               children: [
                 const Text("Don't have an account? "),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    GoRouter.of(context).go('/register');
+                  },
                   child: Text(
                     'Create Account',
                     style: TextStyle(

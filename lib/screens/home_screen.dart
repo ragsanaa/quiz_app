@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:quiz_app/utils/constants.dart';
 import 'package:quiz_app/widgets/my_custom_button.dart';
 
@@ -22,16 +23,22 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Align(
-              alignment: Alignment.topRight,
-              child: CircleAvatar(
-                backgroundColor: grey,
-                radius: 25,
-                child: FaIcon(
-                  FontAwesomeIcons.solidUser,
-                  color: purple,
+            InkWell(
+              child: Align(
+
+                alignment: Alignment.topRight,
+                child: CircleAvatar(
+                  backgroundColor: grey,
+                  radius: 25,
+                  child: FaIcon(
+                    FontAwesomeIcons.solidUser,
+                    color: purple,
+                  ),
                 ),
               ),
+              onTap: (){
+                GoRouter.of(context).go('/profile');
+              },
             ),
             Container(
               padding: paddingAll,

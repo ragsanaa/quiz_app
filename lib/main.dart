@@ -7,6 +7,7 @@ import 'package:quiz_app/screens/entry_screen.dart';
 import 'package:quiz_app/screens/home_screen.dart';
 import 'package:quiz_app/screens/login_screen.dart';
 import 'package:quiz_app/screens/mode_screen.dart';
+import 'package:quiz_app/screens/profile_screen.dart';
 import 'package:quiz_app/screens/quiz_screen.dart';
 import 'package:quiz_app/screens/register_screen.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
@@ -42,7 +43,11 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: '/register',
-      builder: (context, state) => const RegisterScreen(),
+      builder: (context, state) => RegisterScreen(),
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
     ),
     GoRoute(
       path: '/category',
