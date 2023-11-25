@@ -31,7 +31,7 @@ class ModeScreen extends ConsumerWidget {
                   children: [
                     Slider(
                       value: currentSliderValue.toDouble(),
-                      max: 50,
+                      max: count > 50 ? 50 : count.toDouble(),
                       divisions: count,
                       onChanged: (value) {
                         ref.read(sliderValue.notifier).state = value.toInt();

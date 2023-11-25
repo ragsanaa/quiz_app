@@ -78,29 +78,27 @@ class QuizScreen extends ConsumerWidget {
                   List<Result> questions = snapshot.data;
 
                   if (nextQuestion < questions.length) {
-                    return Column(
-                      children: <Widget>[
-                        Question(questions[nextQuestion], index: nextQuestion),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            if (nextQuestion > 0)
-                              const PrevNextButton(
-                                FontAwesomeIcons.arrowLeft,
-                                direction: 'previous',
+                    return Expanded(
+                      child: ListView(
+                        children: <Widget>[
+                          Question(questions[nextQuestion],
+                              index: nextQuestion),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              PrevNextButton(
+                                (nextQuestion >= 0 &&
+                                        nextQuestion < questions.length - 1)
+                                    ? FontAwesomeIcons.arrowRight
+                                    : FontAwesomeIcons.check,
+                                direction: nextQuestion == questions.length - 1
+                                    ? 'finish'
+                                    : 'next',
                               ),
-                            PrevNextButton(
-                              (nextQuestion >= 0 &&
-                                      nextQuestion < questions.length - 1)
-                                  ? FontAwesomeIcons.arrowRight
-                                  : FontAwesomeIcons.check,
-                              direction: nextQuestion == questions.length - 1
-                                  ? 'finish'
-                                  : 'next',
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     );
                   }
                   return const Text('No more questions');

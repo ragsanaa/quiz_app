@@ -8,7 +8,7 @@ class ProfileScreen extends StatelessWidget {
   Future<void> _signOut(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
-      GoRouter.of(context).go('/login');
+      GoRouter.of(context).go('/home');
     } catch (e) {
       print('Sign out error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -26,6 +26,10 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        leading: IconButton(
+          onPressed: () => GoRouter.of(context).go('/home'),
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

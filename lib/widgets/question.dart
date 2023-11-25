@@ -19,47 +19,45 @@ class Question extends StatelessWidget {
     answers.shuffle();
     return Container(
       padding: paddingAll,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Text(
-              'Q ${index + 1}. ${unescape.convert(question.question)}',
-              style: TextStyle(fontSize: fontSize * 2),
-            ),
-            mySpacer,
-            ...answers.map((answer) {
-              return Padding(
-                padding: paddingAll,
-                child: ElevatedButton(
-                  onPressed: () {
-                    answer = answer.copyWith(isSelected: !answer.isSelected);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: answer.isSelected
-                        ? MaterialStateProperty.all(lightPurple)
-                        : MaterialStateProperty.all(white),
-                    padding: MaterialStateProperty.all(paddingAll),
-                    elevation: MaterialStateProperty.all(10),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        side: BorderSide(
-                            color: purple, width: 2, style: BorderStyle.solid),
-                      ),
+      child: Column(
+        children: [
+          Text(
+            'Q ${index + 1}. ${unescape.convert(question.question)}',
+            style: TextStyle(fontSize: fontSize * 2),
+          ),
+          mySpacer,
+          ...answers.map((answer) {
+            return Padding(
+              padding: paddingAll,
+              child: ElevatedButton(
+                onPressed: () {
+                  answer = answer.copyWith(isSelected: !answer.isSelected);
+                },
+                style: ButtonStyle(
+                  backgroundColor: answer.isSelected
+                      ? MaterialStateProperty.all(lightPurple)
+                      : MaterialStateProperty.all(white),
+                  padding: MaterialStateProperty.all(paddingAll),
+                  elevation: MaterialStateProperty.all(10),
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      side: BorderSide(
+                          color: purple, width: 2, style: BorderStyle.solid),
                     ),
                   ),
-                  child: Center(
-                    child: Text(unescape.convert(answer.answer),
-                        style: TextStyle(
-                            color: purple,
-                            fontWeight: bold,
-                            fontSize: fontSize * 1.2)),
-                  ),
                 ),
-              );
-            }).toList(),
-          ],
-        ),
+                child: Center(
+                  child: Text(unescape.convert(answer.answer),
+                      style: TextStyle(
+                          color: purple,
+                          fontWeight: bold,
+                          fontSize: fontSize * 1.2)),
+                ),
+              ),
+            );
+          }).toList(),
+        ],
       ),
     );
   }
