@@ -41,7 +41,7 @@ final questionsProvider = StreamProvider.autoDispose<List<Result>>(
       return event.docs.asMap().entries.map((entry) {
         final int i = entry.key;
         final e = entry.value;
-        return Result.fromJson(e.data()["question${i + 1}"], id: e.id);
+        return Result.fromJson(e.data(), id: e.id);
       }).toList();
     });
   },

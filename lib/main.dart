@@ -9,6 +9,7 @@ import 'package:quiz_app/screens/login_register_screen.dart';
 import 'package:quiz_app/screens/mode_screen.dart';
 import 'package:quiz_app/screens/profile_screen.dart';
 import 'package:quiz_app/screens/quiz_screen.dart';
+import 'package:quiz_app/screens/result_screen.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
 
 import 'firebase_options.dart';
@@ -61,6 +62,10 @@ final GoRouter _router = GoRouter(
       path: '/quiz',
       name: 'quiz',
       builder: (context, state) => QuizScreen(),
+    ),
+    GoRoute(
+      path: '/result',
+      builder: (context, state) => const ResultScreen(),
     ),
   ],
 );

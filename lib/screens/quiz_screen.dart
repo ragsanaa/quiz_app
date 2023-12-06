@@ -14,9 +14,6 @@ class QuizScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var amount = ref.watch(sliderValue).toString();
-    var category = ref.watch(categoryIdProvider);
-    var difficulty = ref.watch(difficultyProvider);
-    var type = ref.watch(radioValue);
     var nextQuestion = ref.watch(nextQuestionProvider);
 
     var questions = ref.watch(getQuestionProvider);
@@ -132,7 +129,6 @@ class PrevNextButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var nextQuestion = ref.watch(nextQuestionProvider);
 
     return Padding(
       padding: paddingAll,
@@ -161,6 +157,12 @@ class PrevNextButton extends ConsumerWidget {
               duration: const Duration(milliseconds: 500),
               curve: Curves.ease,
             );
+          } else if (direction == 'finish') {
+            ref.read(isPressed1.notifier).update((state) => false);
+            ref.read(isPressed2.notifier).update((state) => false);
+            ref.read(isPressed3.notifier).update((state) => false);
+            ref.read(isPressed4.notifier).update((state) => false);
+            GoRouter.of(context).go('/result');
           }
           // else {
           //   if (nextQuestion > 0) {

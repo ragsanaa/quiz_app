@@ -140,88 +140,104 @@ class Question extends ConsumerWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: paddingAll,
-                child: ElevatedButton(
-                  onPressed: () {
-                    ref.read(isPressed3.notifier).update((state) => !state);
-                    if (answers[2].answer == questionData.correctAnswer) {
-                      ref.read(questionServiceProvider.notifier).updateQuestion(
-                          questionData.id!,
-                          questionData.copyWith(
-                              selectedAns: answers[2].answer, isCorrect: true));
-                    } else {
-                      ref.read(questionServiceProvider.notifier).updateQuestion(
-                          questionData.id!,
-                          questionData.copyWith(
-                              selectedAns: answers[2].answer,
-                              isCorrect: false));
-                    }
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        button3 ? answers[2].buttonColor : white),
-                    padding: MaterialStateProperty.all(paddingAll),
-                    elevation: MaterialStateProperty.all(10),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        side: BorderSide(
-                            color: purple, width: 2, style: BorderStyle.solid),
+              if (answers.length > 2)
+                Padding(
+                  padding: paddingAll,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      ref.read(isPressed3.notifier).update((state) => !state);
+                      if (answers[2].answer == questionData.correctAnswer) {
+                        ref
+                            .read(questionServiceProvider.notifier)
+                            .updateQuestion(
+                                questionData.id!,
+                                questionData.copyWith(
+                                    selectedAns: answers[2].answer,
+                                    isCorrect: true));
+                      } else {
+                        ref
+                            .read(questionServiceProvider.notifier)
+                            .updateQuestion(
+                                questionData.id!,
+                                questionData.copyWith(
+                                    selectedAns: answers[2].answer,
+                                    isCorrect: false));
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          button3 ? answers[2].buttonColor : white),
+                      padding: MaterialStateProperty.all(paddingAll),
+                      elevation: MaterialStateProperty.all(10),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          side: BorderSide(
+                              color: purple,
+                              width: 2,
+                              style: BorderStyle.solid),
+                        ),
                       ),
                     ),
-                  ),
-                  child: Center(
-                    child: Text(answers[2].answer,
-                        style: TextStyle(
-                            color: purple,
-                            fontWeight: bold,
-                            fontSize: fontSize * 1.2)),
+                    child: Center(
+                      child: Text(answers[2].answer,
+                          style: TextStyle(
+                              color: purple,
+                              fontWeight: bold,
+                              fontSize: fontSize * 1.2)),
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: paddingAll,
-                child: ElevatedButton(
-                  onPressed: () {
-                    ref.read(isPressed4.notifier).update((state) => !state);
-                    if (answers[3].answer == questionData.correctAnswer) {
+              if (answers.length > 3)
+                Padding(
+                  padding: paddingAll,
+                  child: ElevatedButton(
+                    onPressed: () {
                       ref.read(isPressed4.notifier).update((state) => !state);
+                      if (answers[3].answer == questionData.correctAnswer) {
+                        ref.read(isPressed4.notifier).update((state) => !state);
 
-                      ref.read(questionServiceProvider.notifier).updateQuestion(
-                          questionData.id!,
-                          questionData.copyWith(
-                              selectedAns: answers[3].answer, isCorrect: true));
-                    } else {
-                      ref.read(questionServiceProvider.notifier).updateQuestion(
-                          questionData.id!,
-                          questionData.copyWith(
-                              selectedAns: answers[3].answer,
-                              isCorrect: false));
-                    }
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        button4 ? answers[3].buttonColor : white),
-                    padding: MaterialStateProperty.all(paddingAll),
-                    elevation: MaterialStateProperty.all(10),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50),
-                        side: BorderSide(
-                            color: purple, width: 2, style: BorderStyle.solid),
+                        ref
+                            .read(questionServiceProvider.notifier)
+                            .updateQuestion(
+                                questionData.id!,
+                                questionData.copyWith(
+                                    selectedAns: answers[3].answer,
+                                    isCorrect: true));
+                      } else {
+                        ref
+                            .read(questionServiceProvider.notifier)
+                            .updateQuestion(
+                                questionData.id!,
+                                questionData.copyWith(
+                                    selectedAns: answers[3].answer,
+                                    isCorrect: false));
+                      }
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          button4 ? answers[3].buttonColor : white),
+                      padding: MaterialStateProperty.all(paddingAll),
+                      elevation: MaterialStateProperty.all(10),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50),
+                          side: BorderSide(
+                              color: purple,
+                              width: 2,
+                              style: BorderStyle.solid),
+                        ),
                       ),
                     ),
-                  ),
-                  child: Center(
-                    child: Text(answers[3].answer,
-                        style: TextStyle(
-                            color: purple,
-                            fontWeight: bold,
-                            fontSize: fontSize * 1.2)),
+                    child: Center(
+                      child: Text(answers[3].answer,
+                          style: TextStyle(
+                              color: purple,
+                              fontWeight: bold,
+                              fontSize: fontSize * 1.2)),
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
