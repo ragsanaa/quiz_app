@@ -4,25 +4,23 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quiz_app/models/questions.dart';
 import 'package:quiz_app/providers/provider.dart';
-import 'package:quiz_app/services/question_service.dart';
 import 'package:quiz_app/utils/constants.dart';
 import 'package:quiz_app/widgets/question.dart';
 
 class QuizScreen extends ConsumerWidget {
-  final String amount;
-  final String category;
-  final String difficulty;
-  final String type;
-  const QuizScreen(
-      {super.key,
-      required this.amount,
-      required this.category,
-      required this.difficulty,
-      required this.type});
+  QuizScreen({super.key});
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var amount = ref.watch(sliderValue).toString();
+    var category = ref.watch(categoryIdProvider);
+    var difficulty = ref.watch(difficultyProvider);
+    var type = ref.watch(radioValue);
     var nextQuestion = ref.watch(nextQuestionProvider);
+
+    var questions = ref.watch(getQuestionProvider);
+
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -61,48 +59,55 @@ class QuizScreen extends ConsumerWidget {
                 ],
               ),
               mySpacer,
-              FutureBuilder(
-                future: QuestionService().getQuestions(
-                  amount: amount,
-                  categoryId: category,
-                  difficulty: difficulty,
-                  type: type,
-                ),
-                builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.hasError) {
-                    return const Text('Something went wrong!');
-                  }
-                  List<Result> questions = snapshot.data;
+              questions.when(
+                data: (data) {
+                  return Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: PageView.builder(
+                            controller: _pageController,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: data.length,
+                            itemBuilder: (context, index) {
+                              var newQuestion = ref
+                                  .read(questionServiceProvider.notifier)
+                                  .addQuestion(data[index]);
 
-                  if (nextQuestion < questions.length) {
-                    return Expanded(
-                      child: ListView(
-                        children: <Widget>[
-                          Question(questions[nextQuestion],
-                              index: nextQuestion),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              PrevNextButton(
-                                (nextQuestion >= 0 &&
-                                        nextQuestion < questions.length - 1)
-                                    ? FontAwesomeIcons.arrowRight
-                                    : FontAwesomeIcons.check,
-                                direction: nextQuestion == questions.length - 1
-                                    ? 'finish'
-                                    : 'next',
-                              ),
-                            ],
+                              return Question(
+                                newQuestion,
+                                index: index,
+                              );
+                            },
                           ),
-                        ],
-                      ),
-                    );
-                  }
-                  return const Text('No more questions');
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if (nextQuestion < int.parse(amount) - 1)
+                              PrevNextButton(
+                                FontAwesomeIcons.arrowRight,
+                                pageController: _pageController,
+                                questions: data,
+                              ),
+                            if (nextQuestion == int.parse(amount) - 1)
+                              PrevNextButton(
+                                FontAwesomeIcons.check,
+                                direction: 'finish',
+                                pageController: _pageController,
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
                 },
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+                error: (error, stackTrace) => Center(
+                  child: Text(error.toString()),
+                ),
               ),
             ],
           ),
@@ -115,11 +120,20 @@ class QuizScreen extends ConsumerWidget {
 class PrevNextButton extends ConsumerWidget {
   final IconData icon;
   final String direction;
-  const PrevNextButton(this.icon, {super.key, this.direction = 'next'});
+  final PageController pageController;
+  final List<Result> questions;
+
+  const PrevNextButton(this.icon,
+      {Key? key,
+      required this.pageController,
+      this.direction = 'next',
+      this.questions = const []})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var nextQuestion = ref.watch(nextQuestionProvider);
+
     return Padding(
       padding: paddingAll,
       child: ElevatedButton(
@@ -139,14 +153,25 @@ class PrevNextButton extends ConsumerWidget {
             ref
                 .read(nextQuestionProvider.notifier)
                 .update((state) => state + 1);
-            print(nextQuestion);
-          } else {
-            if (nextQuestion > 0) {
-              ref
-                  .read(nextQuestionProvider.notifier)
-                  .update((state) => state - 1);
-            }
+            ref.read(isPressed.notifier).update((state) {
+              return false;
+            });
+            pageController.nextPage(
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.ease,
+            );
           }
+          // else {
+          //   if (nextQuestion > 0) {
+          //     ref
+          //         .read(nextQuestionProvider.notifier)
+          //         .update((state) => state - 1);
+          //     pageController.previousPage(
+          //       duration: const Duration(milliseconds: 500),
+          //       curve: Curves.ease,
+          //     );
+          //   }
+          // }
         },
         child: FaIcon(
           icon,

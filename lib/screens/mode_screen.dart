@@ -64,12 +64,11 @@ class ModeScreen extends ConsumerWidget {
           actions: [
             TextButton(
               onPressed: () {
-                GoRouter.of(context).goNamed('quiz', queryParameters: {
-                  'amount': ref.watch(sliderValue).toString(),
-                  'category': id,
-                  'difficulty': 'easy',
-                  'type': 'multiple',
-                });
+                ref.read(categoryIdProvider.notifier).update((state) => id);
+                ref.read(difficultyProvider.notifier).update((state) => 'easy');
+
+                ref.watch(getQuestionProvider);
+                GoRouter.of(context).goNamed('quiz');
               },
               child: const Text('Start'),
             ),

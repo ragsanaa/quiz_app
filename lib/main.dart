@@ -5,11 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:quiz_app/screens/category_screen.dart';
 import 'package:quiz_app/screens/entry_screen.dart';
 import 'package:quiz_app/screens/home_screen.dart';
-import 'package:quiz_app/screens/login_screen.dart';
+import 'package:quiz_app/screens/login_register_screen.dart';
 import 'package:quiz_app/screens/mode_screen.dart';
 import 'package:quiz_app/screens/profile_screen.dart';
 import 'package:quiz_app/screens/quiz_screen.dart';
-import 'package:quiz_app/screens/register_screen.dart';
 import 'package:quiz_app/screens/splash_screen.dart';
 
 import 'firebase_options.dart';
@@ -42,12 +41,8 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => LoginScreen(),
     ),
     GoRoute(
-      path: '/register',
-      builder: (context, state) => RegisterScreen(),
-    ),
-    GoRoute(
       path: '/profile',
-      builder: (context, state) => const ProfileScreen(),
+      builder: (context, state) => ProfileScreen(),
     ),
     GoRoute(
       path: '/category',
@@ -65,12 +60,7 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/quiz',
       name: 'quiz',
-      builder: (context, state) => QuizScreen(
-        amount: state.uri.queryParameters['amount']!,
-        category: state.uri.queryParameters['category']!,
-        difficulty: state.uri.queryParameters['difficulty']!,
-        type: state.uri.queryParameters['type']!,
-      ),
+      builder: (context, state) => QuizScreen(),
     ),
   ],
 );

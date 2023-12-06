@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quiz_app/screens/login_screen.dart';
+import 'package:quiz_app/providers/provider.dart';
+import 'package:quiz_app/screens/login_register_screen.dart';
+import 'package:quiz_app/services/firebase_auth_service.dart';
 import 'package:quiz_app/utils/constants.dart';
 
-class EntryScreen extends StatelessWidget {
+class EntryScreen extends ConsumerWidget {
   EntryScreen({super.key});
   final emailCtrl = TextEditingController();
   final passwordCtrl = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final FirebaseAuthService authService = ref.read(firebaseAuthService);
     return Scaffold(
       body: Builder(builder: (context) {
         return Container(
@@ -36,6 +40,9 @@ class EntryScreen extends StatelessWidget {
                     onPressed: () {
                       showModalBottomSheet(
                         context: context,
+                        isScrollControlled: true,
+                        showDragHandle: true,
+                        useSafeArea: true,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadiusDirectional.only(
                             topEnd: Radius.circular(25),
@@ -44,6 +51,12 @@ class EntryScreen extends StatelessWidget {
                         ),
                         builder: (context) => LoginScreen(),
                       );
+                      ref
+                          .read(isRegistredProvider.notifier)
+                          .update((state) => true);
+                      ref
+                          .read(isForgotPassProvider.notifier)
+                          .update((state) => false);
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(purpleBlue),
@@ -66,7 +79,9 @@ class EntryScreen extends StatelessWidget {
                   ),
                   mySpacer,
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      authService.signInWithGoogle();
+                    },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(white),
                       padding: MaterialStateProperty.all(paddingAll),
