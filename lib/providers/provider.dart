@@ -13,7 +13,10 @@ final isForgotPassProvider = StateProvider<bool>((ref) => false);
 final readOnlyProvider = StateProvider<bool>((ref) => true);
 final categoryIdProvider = StateProvider<String>((ref) => '0');
 final difficultyProvider = StateProvider<String>((ref) => '');
-final isPressed = StateProvider<bool>((ref) => false);
+final isPressed1 = StateProvider<bool>((ref) => false);
+final isPressed2 = StateProvider<bool>((ref) => false);
+final isPressed3 = StateProvider<bool>((ref) => false);
+final isPressed4 = StateProvider<bool>((ref) => false);
 
 final nextQuestionProvider = StateProvider<int>((ref) => 0);
 

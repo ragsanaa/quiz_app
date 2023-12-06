@@ -153,9 +153,10 @@ class PrevNextButton extends ConsumerWidget {
             ref
                 .read(nextQuestionProvider.notifier)
                 .update((state) => state + 1);
-            ref.read(isPressed.notifier).update((state) {
-              return false;
-            });
+            ref.read(isPressed1.notifier).update((state) => false);
+            ref.read(isPressed2.notifier).update((state) => false);
+            ref.read(isPressed3.notifier).update((state) => false);
+            ref.read(isPressed4.notifier).update((state) => false);
             pageController.nextPage(
               duration: const Duration(milliseconds: 500),
               curve: Curves.ease,

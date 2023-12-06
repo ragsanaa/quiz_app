@@ -66,7 +66,7 @@ class ModeScreen extends ConsumerWidget {
               onPressed: () {
                 ref.read(categoryIdProvider.notifier).update((state) => id);
                 ref.read(difficultyProvider.notifier).update((state) => 'easy');
-
+                ref.read(nextQuestionProvider.notifier).update((state) => 0);
                 ref.watch(getQuestionProvider);
                 GoRouter.of(context).goNamed('quiz');
               },
