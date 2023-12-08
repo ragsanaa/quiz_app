@@ -113,23 +113,18 @@ class LoginScreen extends ConsumerWidget {
                 ElevatedButton(
                   onPressed: () async {
                     if (formKey.currentState!.validate()) {
-                      isRegistred && !isForgotPass
-                          ? await loginUser(authService, context)
-                          : isForgotPass
-                              ? await auth.sendPasswordResetEmail(
-                                  email: emailCtrl.text)
-                              : await registerUser(auth, context);
                       if (isRegistred && !isForgotPass) {
-                        GoRouter.of(context).go('/home');
-                        ref.read(isRegistredProvider.notifier).update((state) {
-                          return !state;
-                        });
+                        await loginUser(authService, context, ref);
                       } else if (isForgotPass) {
+                        await auth.sendPasswordResetEmail(
+                            email: emailCtrl.text);
                         GoRouter.of(context).go('/entry');
 
                         ref.read(isForgotPassProvider.notifier).update((state) {
                           return !state;
                         });
+                      } else {
+                        await registerUser(auth, context);
                       }
                     }
                   },
@@ -209,18 +204,35 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> loginUser(FirebaseAuthService auth, BuildContext context) async {
-    User? user = await auth.signInWithEmailAndPassword(
+  Future<void> loginUser(
+      FirebaseAuthService auth, BuildContext context, WidgetRef ref) async {
+    UserCredential? user = await auth.signInWithEmailAndPassword(
         emailCtrl.text, passwordCtrl.text);
     emailCtrl.clear();
     passwordCtrl.clear();
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Login Successful',
+
+    if (user != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Login Successful',
+          ),
         ),
-      ),
-    );
+      );
+      ref.read(isRegistredProvider.notifier).update((state) {
+        return !state;
+      });
+      GoRouter.of(context).go('/home');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Login Failed',
+          ),
+        ),
+      );
+      GoRouter.of(context).go('/entry');
+    }
   }
 
   Future<void> registerUser(FirebaseAuth auth, BuildContext context) async {

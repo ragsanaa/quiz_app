@@ -8,7 +8,7 @@ class FirebaseAuthService {
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  Future<User?> signInWithEmailAndPassword(
+  Future<UserCredential?> signInWithEmailAndPassword(
       String email, String password) async {
     try {
       final UserCredential userCredential =
@@ -16,14 +16,14 @@ class FirebaseAuthService {
         email: email,
         password: password,
       );
-      return userCredential.user;
+      return userCredential;
     } catch (e) {
       print('Error signing in: $e');
       return null;
     }
   }
 
-  Future<User?> registerWithEmailAndPassword(
+  Future<UserCredential?> registerWithEmailAndPassword(
       String email, String password) async {
     try {
       final UserCredential userCredential =
@@ -31,7 +31,7 @@ class FirebaseAuthService {
         email: email,
         password: password,
       );
-      return userCredential.user;
+      return userCredential;
     } catch (e) {
       print('Error registering user: $e');
       return null;
